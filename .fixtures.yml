@@ -1,0 +1,8 @@
+fixtures:
+  repositories:
+    mysql:
+      repo: 'https://github.com/Adaptavist/puppet-mysql'
+    stdlib:
+      repo: 'https://github.com/Adaptavist/puppet-stdlib'
+  symlinks:
+    mysqlconfig: "#{source_dir}"

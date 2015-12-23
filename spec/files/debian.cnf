@@ -1,0 +1,8 @@
+[client]
+host     = localhost
+user     = "redhat-sys-maint"
+password = "verysecure"
+[mysql_upgrade]
+host     = localhost
+user     = "redhat-sys-maint"
+password = "verysecure"
