@@ -1,5 +1,6 @@
 
 # MySQLConfig Module
+[![Build Status](https://travis-ci.org/Adaptavist/puppet-mysqlconfig.svg?branch=master)](https://travis-ci.org/Adaptavist/puppet-mysqlconfig)
 
 ## Overview
 
