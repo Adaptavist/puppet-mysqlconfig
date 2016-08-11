@@ -42,6 +42,14 @@ The root password on Redhat is set to the value of `mysql_root_password` paramet
 
 `mysqlconfig::init_overwrite_file:` The file in which to place a custom start timeout on RedHat systems that use SysVInit (<= 6), defaults to '/etc/sysconfig/mysqld'
 
+`mysqlconfig::selinux_context`  The selinux context for mysql data directories, defaults to 'mysqld_db_t'
+
+`mysqlconfig::semanage_package`  The package which contains semanage, defaults to "policycoreutils-python" on RHEL 
+and "policycoreutils" on Debian
+
+`mysqlconfig::datadir:` A custom MySQL data directory location, if not false or "false" and selinux is enabled the 
+selinu context set in `mysqlconfig::semanage_package` is applied to the directory, defaults to false
+
 Configuration can be host specific, if that is desired pass the configuration values inside host hash e.g.
 
 ```
