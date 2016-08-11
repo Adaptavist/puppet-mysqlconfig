@@ -154,7 +154,7 @@ class mysqlconfig (
     }
 
     $override_options = merge($default_override_options, $custom_mysql_options, $host_override_options)
-    
+
     # if selinux is enabled and we have a custom datadir set the correct selinux context
     if (str2bool($::selinux) and $datadir != 'false' and $datadir != false) {
         ensure_packages([$semanage_package])
@@ -165,7 +165,8 @@ class mysqlconfig (
         }
     }
 
-    # if this is CentOS/RHEL >= 7 install the mysql community YUM repo and install the community MySQL server/client as CentOS/RHEL >= 7 ship with MariaDB
+    # if this is CentOS/RHEL >= 7 install the mysql community YUM repo and install the 
+    # community MySQL server/client as CentOS/RHEL >= 7 ship with MariaDB
     if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease,'7') >= 0 and $::operatingsystem != 'Fedora') {
         # install the RPM package containing the MySQL community yum repo
         package { $mysql_community_yum_name:
