@@ -16,6 +16,9 @@ class mysqlconfig (
         $admin_file_location      = $mysqlconfig::params::admin_file_location,
         $init_script_timeout      = $mysqlconfig::params::init_script_timeout,
         $init_overwrite_file      = $mysqlconfig::params::init_overwrite_file,
+        $selinux_context          = $mysqlconfig::params::selinux_context,
+        $semanage_package         = $mysqlconfig::params::semanage_package,
+        $datadir                  = $mysqlconfig::params::datadir,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -152,6 +155,15 @@ class mysqlconfig (
 
     $override_options = merge($default_override_options, $custom_mysql_options, $host_override_options)
     
+    # if selinux is enabled and we have a custom datadir set the correct selinux context
+    if (str2bool($::selinux) and $datadir != 'false' and $datadir != false) {
+        ensure_packages([$semanage_package])
+
+        exec { 'mysql_datadir_selinux':
+            command => "semanage fcontext -a -t ${selinux_context} \"${datadir}(/.*)?\" && restorecon -R -v ${datadir}",
+            before  => Class['mysql::server']
+        }
+    }
 
     # if this is CentOS/RHEL >= 7 install the mysql community YUM repo and install the community MySQL server/client as CentOS/RHEL >= 7 ship with MariaDB
     if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease,'7') >= 0 and $::operatingsystem != 'Fedora') {
