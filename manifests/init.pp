@@ -161,7 +161,8 @@ class mysqlconfig (
 
         exec { 'mysql_datadir_selinux':
             command => "semanage fcontext -a -t ${selinux_context} \"${datadir}(/.*)?\" && restorecon -R -v ${datadir}",
-            before  => Class['mysql::server']
+            before  => Class['mysql::server'],
+            require => Package[$semanage_package]
         }
     }
 
