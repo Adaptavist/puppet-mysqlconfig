@@ -19,6 +19,7 @@ class mysqlconfig (
         $selinux_context          = $mysqlconfig::params::selinux_context,
         $semanage_package         = $mysqlconfig::params::semanage_package,
         $datadir                  = $mysqlconfig::params::datadir,
+        $manage_config_file       = $mysqlconfig::params::manage_config_file,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -179,11 +180,12 @@ class mysqlconfig (
             before   => [Class['mysql::server'], Class['mysql::client']]
         }
         class { 'mysql::server' :
-            root_password    => $root_password,
-            override_options => $override_options,
-            users            => $mysql_users,
-            grants           => $mysql_grants,
-            package_name     => $mysql_community_server
+            root_password      => $root_password,
+            override_options   => $override_options,
+            users              => $mysql_users,
+            grants             => $mysql_grants,
+            package_name       => $mysql_community_server,
+            manage_config_file => str2bool($manage_config_file)
         }
         class { 'mysql::client' :
             package_name     => $mysql_community_client

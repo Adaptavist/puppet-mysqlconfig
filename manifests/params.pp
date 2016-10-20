@@ -21,4 +21,5 @@ class mysqlconfig::params {
         'Debian' => 'policycoreutils',
     }
     $datadir = false
+    $manage_config_file = true
 }
