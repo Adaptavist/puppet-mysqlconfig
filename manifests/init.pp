@@ -157,7 +157,9 @@ class mysqlconfig (
 
     # if selinux is enabled and we have a custom datadir set the correct selinux context
     if (str2bool($::selinux) and $datadir != 'false' and $datadir != false) {
-        ensure_packages([$semanage_package])
+        if ! defined(Package[$semanage_package]) {
+            ensure_packages([$semanage_package])
+        }
 
         exec { 'mysql_datadir_selinux':
             command => "semanage fcontext -a -t ${selinux_context} \"${datadir}(/.*)?\" && restorecon -R -v ${datadir}",
