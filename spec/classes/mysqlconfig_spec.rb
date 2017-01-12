@@ -99,7 +99,9 @@ describe 'mysqlconfig', :type => 'class' do
 
 context "Should create /etc/mysql/redhat.cnf on RedHat " do
     let (:facts) {
-      { :osfamily => 'RedHat' }
+      { :osfamily => 'RedHat',
+        :operatingsystemrelease => '6'
+      }
     }
     let(:params) { 
       { :admin_file_location => admin_file_location,
@@ -123,7 +125,9 @@ context "Should create /etc/mysql/redhat.cnf on RedHat " do
 context "Should not create /etc/mysql/redhat.cnf on RedHat if instructed not to" do
     let (:facts) {
 
-      { :osfamily => 'RedHat' }
+      { :osfamily => 'RedHat',
+        :operatingsystemrelease => '6'
+      }
     }
     let(:params) { 
       { :admin_file_location => admin_file_location,
