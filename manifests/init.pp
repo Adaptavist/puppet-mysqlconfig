@@ -20,6 +20,7 @@ class mysqlconfig (
         $semanage_package         = $mysqlconfig::params::semanage_package,
         $datadir                  = $mysqlconfig::params::datadir,
         $manage_config_file       = $mysqlconfig::params::manage_config_file,
+        $install_community_repo   = $mysqlconfig::params::install_community_repo,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -172,12 +173,14 @@ class mysqlconfig (
     # if this is CentOS/RHEL >= 7 install the mysql community YUM repo and install the 
     # community MySQL server/client as CentOS/RHEL >= 7 ship with MariaDB
     if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease,'7') >= 0 and $::operatingsystem != 'Fedora') {
-        # install the RPM package containing the MySQL community yum repo
-        package { $mysql_community_yum_name:
-            ensure   => 'installed',
-            source   => $mysql_community_yum_url,
-            provider => 'rpm',
-            before   => [Class['mysql::server'], Class['mysql::client']]
+        # install the RPM package containing the MySQL community yum repo if required to do so
+        if (str2bool($install_community_repo)) {
+            package { $mysql_community_yum_name:
+                ensure   => 'installed',
+                source   => $mysql_community_yum_url,
+                provider => 'rpm',
+                before   => [Class['mysql::server'], Class['mysql::client']]
+            }
         }
         class { 'mysql::server' :
             root_password      => $root_password,
@@ -192,10 +195,11 @@ class mysqlconfig (
         }
     } else {
         class { 'mysql::server' :
-            root_password    => $root_password,
-            override_options => $override_options,
-            users            => $mysql_users,
-            grants           => $mysql_grants
+            root_password      => $root_password,
+            override_options   => $override_options,
+            users              => $mysql_users,
+            grants             => $mysql_grants,
+            manage_config_file => str2bool($manage_config_file)
         }
     }
 }

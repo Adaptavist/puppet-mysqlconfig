@@ -1,5 +1,5 @@
 name 'adaptavist-mysqlconfig'
-version 1.0.0'
+version 1.0.1'
 source 'https://github.com/Adaptavist/puppet-mysqlconfig.git'
 author 'adaptavist'
 license 'apache2'

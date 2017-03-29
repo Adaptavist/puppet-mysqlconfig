@@ -22,4 +22,5 @@ class mysqlconfig::params {
     }
     $datadir = false
     $manage_config_file = true
+    $install_community_repo = true
 }
