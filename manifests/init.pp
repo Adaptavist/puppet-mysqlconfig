@@ -21,6 +21,9 @@ class mysqlconfig (
         $datadir                  = $mysqlconfig::params::datadir,
         $manage_config_file       = $mysqlconfig::params::manage_config_file,
         $install_community_repo   = $mysqlconfig::params::install_community_repo,
+        $server_service_name      = $mysqlconfig::params::server_service_name,
+        $pid_file                 = $mysqlconfig::params::pid_file,
+        $log_error                = $mysqlconfig::params::log_error,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -86,6 +89,8 @@ class mysqlconfig (
             'default-storage-engine' => 'innodb',
             'transaction-isolation'  => 'READ-COMMITTED',
             'bind_address'           => $custom_bind_address,
+            'pid_file'               => $pid_file,
+            'log_error'              => $log_error,
         },
         'client' => {
             'default-character-set'  => 'utf8'
@@ -95,6 +100,9 @@ class mysqlconfig (
         },
         'mysqldump' => {
             'max_allowed_packet'     => $max_allowed_packet
+        },
+        'mysqld_safe' => {
+            'log_error'              => $log_error
         }
     }
     if ($::osfamily == 'RedHat') {
@@ -188,7 +196,8 @@ class mysqlconfig (
             users              => $mysql_users,
             grants             => $mysql_grants,
             package_name       => $mysql_community_server,
-            manage_config_file => str2bool($manage_config_file)
+            manage_config_file => str2bool($manage_config_file),
+            service_name       => $server_service_name
         }
         class { 'mysql::client' :
             package_name     => $mysql_community_client
@@ -199,7 +208,8 @@ class mysqlconfig (
             override_options   => $override_options,
             users              => $mysql_users,
             grants             => $mysql_grants,
-            manage_config_file => str2bool($manage_config_file)
+            manage_config_file => str2bool($manage_config_file),
+            service_name       => $server_service_name
         }
     }
 }
