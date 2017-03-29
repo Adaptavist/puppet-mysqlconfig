@@ -27,12 +27,12 @@ class mysqlconfig::params {
         'RedHat': {
             $server_service_name = 'mysqld'
             $log_error = '/var/log/mysqld.log'
-            $pidfile = '/var/run/mysqld/mysqld.pid'
+            $pid_file = '/var/run/mysqld/mysqld.pid'
         }
         'Debian': {
             $server_service_name = 'mysql'
             $log_error = '/var/log/mysql/error.log'
-            $pidfile = '/var/run/mysqld/mysqld.pid'
+            $pid_file = '/var/run/mysqld/mysqld.pid'
         }
         default: {
           fail("Unsupported osfamily: ${::osfamily}, currently only osfamily RedHat and Debian are suported")

@@ -1,14 +1,32 @@
 require 'spec_helper'
- options = {"mysqld"=>{
+ options_redhat = {"mysqld"=>{
  	"max_allowed_packet"=>"128M",
  	"character-set-server"=>"utf8",
  	"collation_server"=>"utf8_bin",
  	"default-storage-engine"=>"innodb",
  	"transaction-isolation"=>"READ-COMMITTED",
-    "bind_address"=>"127.0.0.1"},
+  "bind_address"=>"127.0.0.1",
+  "pid_file"=>"/var/run/mysqld/mysqld.pid",
+  "log_error"=>"/var/log/mysqld.log"},
  	"client"=>{"default-character-set"=>"utf8"},
  	"mysql"=>{"max_allowed_packet"=>"128M"},
- 	"mysqldump"=>{"max_allowed_packet"=>"128M"}}
+ 	"mysqldump"=>{"max_allowed_packet"=>"128M"},
+  "mysqld_safe"=>{"log_error"=>"/var/log/mysqld.log"}}
+
+
+ options_debian = {"mysqld"=>{
+  "max_allowed_packet"=>"128M",
+  "character-set-server"=>"utf8",
+  "collation_server"=>"utf8_bin",
+  "default-storage-engine"=>"innodb",
+  "transaction-isolation"=>"READ-COMMITTED",
+  "bind_address"=>"127.0.0.1",
+  "pid_file"=>"/var/run/mysqld/mysqld.pid",
+  "log_error"=>"/var/log/mysql/error.log"},
+  "client"=>{"default-character-set"=>"utf8"},
+  "mysql"=>{"max_allowed_packet"=>"128M"},
+  "mysqldump"=>{"max_allowed_packet"=>"128M"},
+  "mysqld_safe"=>{"log_error"=>"/var/log/mysql/error.log"}}
 
 root_password = "root_password"
 
@@ -39,7 +57,7 @@ describe 'mysqlconfig', :type => 'class' do
     it {
       should contain_class('mysql::server').with(
     		'root_password' => "UNSET",
-    		'override_options' => options )
+    		'override_options' => options_debian )
   	}
     it {
       should_not contain_package(community_package_name)
@@ -55,7 +73,7 @@ describe 'mysqlconfig', :type => 'class' do
 
   	it {
   		should contain_class('mysql::server').with(
-  			'override_options' => options,
+  			'override_options' => options_redhat,
   			'root_password' => root_password
   			)
   	}
@@ -82,7 +100,7 @@ describe 'mysqlconfig', :type => 'class' do
 
     it {
       should contain_class('mysql::server').with(
-        'override_options' => options,
+        'override_options' => options_redhat,
         'root_password' => root_password,
         'package_name' => community_server_name
       )
