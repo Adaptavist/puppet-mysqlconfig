@@ -24,6 +24,7 @@ class mysqlconfig (
         $server_service_name      = $mysqlconfig::params::server_service_name,
         $pid_file                 = $mysqlconfig::params::pid_file,
         $log_error                = $mysqlconfig::params::log_error,
+        $config_file              = $mysqlconfig::params::config_file,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -163,7 +164,7 @@ class mysqlconfig (
         $mysql_grants = merge($grants, $host_grants)
     }
 
-    $override_options = merge($default_override_options, $custom_mysql_options, $host_override_options)
+    $override_options = deep_merge($default_override_options, $custom_mysql_options, $host_override_options)
 
     # if selinux is enabled and we have a custom datadir set the correct selinux context
     if (str2bool($::selinux) and $datadir != 'false' and $datadir != false) {
@@ -197,7 +198,8 @@ class mysqlconfig (
             grants             => $mysql_grants,
             package_name       => $mysql_community_server,
             manage_config_file => str2bool($manage_config_file),
-            service_name       => $server_service_name
+            service_name       => $server_service_name,
+            config_file        => $config_file,
         }
         class { 'mysql::client' :
             package_name     => $mysql_community_client
