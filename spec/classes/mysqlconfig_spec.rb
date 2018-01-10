@@ -45,7 +45,7 @@ init_remove_timeout = 'rm STARTTIMEOUT'
 describe 'mysqlconfig', :type => 'class' do
     let(:params) { {:mysql_root_password => root_password} }
   context "On a Debian OS, force symlink creation with exec to avoid conflict with mysql module, password is not set" do
-    let (:facts) {{ :osfamily => 'Debian'}}
+    let (:facts) {{ :osfamily => 'Debian', :puppetversion => Puppet.version }}
 
     it {
       should contain_exec('symlink my.cnf').with({
@@ -67,7 +67,8 @@ describe 'mysqlconfig', :type => 'class' do
   context "Should run mysql server with parameters and set correct password in case of RedHat" do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '6.5'
+        :operatingsystemrelease => '6.5',
+        :puppetversion => Puppet.version
       }
     }
 
@@ -86,7 +87,8 @@ describe 'mysqlconfig', :type => 'class' do
   context "Should install the mysql community yum repo package on RedHat >= 7" do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '7.1'
+        :operatingsystemrelease => '7.1',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -118,7 +120,8 @@ describe 'mysqlconfig', :type => 'class' do
 context "Should create /etc/mysql/redhat.cnf on RedHat " do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '6'
+        :operatingsystemrelease => '6',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -144,7 +147,8 @@ context "Should not create /etc/mysql/redhat.cnf on RedHat if instructed not to"
     let (:facts) {
 
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '6'
+        :operatingsystemrelease => '6',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -161,7 +165,8 @@ context "Should not create /etc/mysql/redhat.cnf on RedHat if instructed not to"
 
 context "Should not create /etc/mysql/redhat.cnf on Debian " do
     let (:facts) {
-      { :osfamily => 'Debian' }
+      { :osfamily => 'Debian',
+        :puppetversion => Puppet.version }
     }
     let(:params) { 
       { :admin_file_location => admin_file_location,
@@ -178,7 +183,8 @@ context "Should not create /etc/mysql/redhat.cnf on Debian " do
   context "Should create start timeout override on RedHat <7" do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '6.5'
+        :operatingsystemrelease => '6.5',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -199,7 +205,8 @@ context "Should not create /etc/mysql/redhat.cnf on Debian " do
   context "Should remove start timeout override on RedHat <7" do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '6.5'
+        :operatingsystemrelease => '6.5',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -220,7 +227,8 @@ context "Should not create /etc/mysql/redhat.cnf on Debian " do
   context "Should not have start timeout override on RedHat >= 7" do
     let (:facts) {
       { :osfamily => 'RedHat',
-        :operatingsystemrelease => '7.0'
+        :operatingsystemrelease => '7.0',
+        :puppetversion => Puppet.version
       }
     }
     let(:params) { 
@@ -236,7 +244,9 @@ context "Should not create /etc/mysql/redhat.cnf on Debian " do
 
   context "Should not have start timeout override on Debian" do
     let (:facts) {
-      { :osfamily => 'Debian' }
+      { :osfamily => 'Debian', 
+        :puppetversion => Puppet.version 
+      }
     }
     let(:params) { 
       { :init_script_timeout => 240,
