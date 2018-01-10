@@ -13,6 +13,7 @@ class mysqlconfig::params {
     $admin_username           = 'administrator'
     $admin_password           = false
     $admin_file_location      = '/etc/mysql/debian.cnf'
+    $includedir               = '/etc/mysql/'
     $init_script_timeout      = 0
     $init_overwrite_file      = '/etc/sysconfig/mysqld'
     $selinux_context = 'mysqld_db_t'

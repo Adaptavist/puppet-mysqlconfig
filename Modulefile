@@ -8,5 +8,5 @@ description 'The MySQLConfig module installs and configures a mysql database on 
 project_page 'https://github.com/Adaptavist/puppet-mysqlconfig'
 
 ## Add dependencies, if any:
-dependency 'puppetlabs/mysql', '>= 2.1.0'
+dependency 'puppetlabs/mysql', '>= 3.7.0'
 dependency 'puppetlabs/stdlib'

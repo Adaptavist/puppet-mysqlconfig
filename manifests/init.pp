@@ -25,6 +25,7 @@ class mysqlconfig (
         $pid_file                 = $mysqlconfig::params::pid_file,
         $log_error                = $mysqlconfig::params::log_error,
         $config_file              = $mysqlconfig::params::config_file,
+        $includedir               = $mysqlconfig::params::includedir,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -200,6 +201,7 @@ class mysqlconfig (
             manage_config_file => str2bool($manage_config_file),
             service_name       => $server_service_name,
             config_file        => $config_file,
+            includedir         => $includedir,
         }
         class { 'mysql::client' :
             package_name     => $mysql_community_client
@@ -211,7 +213,9 @@ class mysqlconfig (
             users              => $mysql_users,
             grants             => $mysql_grants,
             manage_config_file => str2bool($manage_config_file),
-            service_name       => $server_service_name
+            service_name       => $server_service_name,
+            config_file        => $config_file,
+            includedir         => $includedir,
         }
     }
 }
