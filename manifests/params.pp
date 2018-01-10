@@ -13,6 +13,7 @@ class mysqlconfig::params {
     $admin_username           = 'administrator'
     $admin_password           = false
     $admin_file_location      = '/etc/mysql/debian.cnf'
+    $includedir               = '/etc/mysql/'
     $init_script_timeout      = 0
     $init_overwrite_file      = '/etc/sysconfig/mysqld'
     $selinux_context = 'mysqld_db_t'
@@ -28,11 +29,13 @@ class mysqlconfig::params {
             $server_service_name = 'mysqld'
             $log_error = '/var/log/mysqld.log'
             $pid_file = '/var/run/mysqld/mysqld.pid'
+            $config_file = '/etc/my.cnf'
         }
         'Debian': {
             $server_service_name = 'mysql'
             $log_error = '/var/log/mysql/error.log'
             $pid_file = '/var/run/mysqld/mysqld.pid'
+            $config_file = '/etc/mysql/my.cnf'
         }
         default: {
           fail("Unsupported osfamily: ${::osfamily}, currently only osfamily RedHat and Debian are suported")
