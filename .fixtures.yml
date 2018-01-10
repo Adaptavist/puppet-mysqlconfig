@@ -2,6 +2,7 @@ fixtures:
   repositories:
     mysql:
       repo: 'https://github.com/Adaptavist/puppet-mysql'
+      ref: '3.7.0a'
     stdlib:
       repo: 'https://github.com/Adaptavist/puppet-stdlib'
   symlinks:
