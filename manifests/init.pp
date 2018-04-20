@@ -26,6 +26,7 @@ class mysqlconfig (
         $log_error                = $mysqlconfig::params::log_error,
         $config_file              = $mysqlconfig::params::config_file,
         $includedir               = $mysqlconfig::params::includedir,
+        $remove_default_accounts  = $mysqlconfig::params::remove_default_accounts,
     ) inherits mysqlconfig::params {
     # override environment vars in mysql module exec resources
     # this allows us to use old password cached in /root/.my.cnf
@@ -193,29 +194,31 @@ class mysqlconfig (
             }
         }
         class { 'mysql::server' :
-            root_password      => $root_password,
-            override_options   => $override_options,
-            users              => $mysql_users,
-            grants             => $mysql_grants,
-            package_name       => $mysql_community_server,
-            manage_config_file => str2bool($manage_config_file),
-            service_name       => $server_service_name,
-            config_file        => $config_file,
-            includedir         => $includedir,
+            root_password           => $root_password,
+            override_options        => $override_options,
+            users                   => $mysql_users,
+            grants                  => $mysql_grants,
+            package_name            => $mysql_community_server,
+            manage_config_file      => str2bool($manage_config_file),
+            service_name            => $server_service_name,
+            config_file             => $config_file,
+            includedir              => $includedir,
+            remove_default_accounts => str2bool($remove_default_accounts),
         }
         class { 'mysql::client' :
             package_name     => $mysql_community_client
         }
     } else {
         class { 'mysql::server' :
-            root_password      => $root_password,
-            override_options   => $override_options,
-            users              => $mysql_users,
-            grants             => $mysql_grants,
-            manage_config_file => str2bool($manage_config_file),
-            service_name       => $server_service_name,
-            config_file        => $config_file,
-            includedir         => $includedir,
+            root_password           => $root_password,
+            override_options        => $override_options,
+            users                   => $mysql_users,
+            grants                  => $mysql_grants,
+            manage_config_file      => str2bool($manage_config_file),
+            service_name            => $server_service_name,
+            config_file             => $config_file,
+            includedir              => $includedir,
+            remove_default_accounts => str2bool($remove_default_accounts),
         }
     }
 }

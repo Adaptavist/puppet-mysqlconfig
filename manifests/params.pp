@@ -16,14 +16,15 @@ class mysqlconfig::params {
     $includedir               = '/etc/mysql/'
     $init_script_timeout      = 0
     $init_overwrite_file      = '/etc/sysconfig/mysqld'
-    $selinux_context = 'mysqld_db_t'
-    $semanage_package = $::osfamily ? {
+    $selinux_context          = 'mysqld_db_t'
+    $remove_default_accounts  = false
+    $semanage_package         = $::osfamily ? {
         'RedHat' => 'policycoreutils-python',
         'Debian' => 'policycoreutils',
     }
-    $datadir = false
-    $manage_config_file = true
-    $install_community_repo = true
+    $datadir                  = false
+    $manage_config_file       = true
+    $install_community_repo   = true
     case $::osfamily {
         'RedHat': {
             $server_service_name = 'mysqld'
